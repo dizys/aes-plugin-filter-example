@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/google/btree v1.0.0 // indirect
-	github.com/hashicorp/consul/api v1.3.0
+	github.com/hashicorp/consul/api v1.3.0 // indirect
 	github.com/hashicorp/go-msgpack v0.5.4 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/kr/pretty v0.2.0 // indirect

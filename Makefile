@@ -1,6 +1,6 @@
 PLUGIN_DIR ?= .
 
-DOCKER_REGISTRY ?= localhost:31000
+DOCKER_REGISTRY ?= dizy
 DOCKER_IMAGE ?= $(DOCKER_REGISTRY)/aes-custom:$(shell git describe --tags --always --dirty)
 
 AES_VERSION ?= 1.13.7

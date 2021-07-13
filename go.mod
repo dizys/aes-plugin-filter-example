@@ -3,6 +3,7 @@ module github.com/datawire/apro-example-plugin
 go 1.13
 
 require (
+	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/google/btree v1.0.0 // indirect
 	github.com/hashicorp/consul/api v1.3.0
 	github.com/hashicorp/go-msgpack v0.5.4 // indirect

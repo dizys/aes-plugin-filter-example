@@ -1,9 +1,8 @@
 PLUGIN_DIR ?= .
 
-DOCKER_REGISTRY ?= dizy
-DOCKER_IMAGE ?= $(DOCKER_REGISTRY)/aes-custom
-COMMIT_TAG ?= $(DOCKER_REGISTRY)/aes-custom:$(shell git describe --tags --always)
-LATEST_TAG ?= $(DOCKER_REGISTRY)/aes-custom:latest
+DOCKER_IMAGE ?= dizy/aes-custom
+COMMIT_TAG ?= $(shell git describe --tags --always)
+LATEST_TAG ?= latest
 
 AES_VERSION ?= 1.13.7
 AES_IMAGE ?= docker.io/datawire/aes:$(AES_VERSION)
@@ -41,11 +40,10 @@ Dockerfile: Dockerfile.in .var.AES_IMAGE
 	docker build -t $(DOCKER_IMAGE) .
 	date > $@
 
-push: .docker.stamp
-	docker tag $(DOCKER_IMAGE) $(COMMIT_TAG)
-	docker tag $(DOCKER_IMAGE) $(LATEST_TAG)
-	docker push --all-tags $(DOCKER_IMAGE)
-.PHONY: push
+tags: .docker.stamp
+	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(COMMIT_TAG)
+	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(LATEST_TAG)
+.PHONY: tags
 
 download-docker:
 	docker pull $(go.DOCKER_IMAGE) || docker run --rm --entrypoint=true $(go.DOCKER_IMAGE)

@@ -24,7 +24,10 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build container image
+      - name: Build image
         run: |
           make
+      
+      - name: Push image
+        run: |
           docker image push --all-tags dizy/aes-custom

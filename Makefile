@@ -1,7 +1,8 @@
 PLUGIN_DIR ?= .
 
 DOCKER_REGISTRY ?= dizy
-DOCKER_IMAGE ?= $(DOCKER_REGISTRY)/aes-custom:$(shell git describe --tags --always)
+DOCKER_IMAGE ?= $(DOCKER_REGISTRY)/aes-custom
+COMMIT_TAG ?= $(DOCKER_REGISTRY)/aes-custom:$(shell git describe --tags --always)
 LATEST_TAG ?= $(DOCKER_REGISTRY)/aes-custom:latest
 
 AES_VERSION ?= 1.13.7
@@ -37,10 +38,12 @@ container.ID = $(shell docker ps -q -f label=component=plugin-builder)
 Dockerfile: Dockerfile.in .var.AES_IMAGE
 	sed 's,@AES_IMAGE@,$(AES_IMAGE),' < $< > $@
 .docker.stamp: $(patsubst $(PLUGIN_DIR)/%.go,%.so,$(wildcard $(PLUGIN_DIR)/*)) Dockerfile
-	docker build -t $(DOCKER_IMAGE) . || docker tag $(DOCKER_IMAGE) $(LATEST_TAG)
+	docker build -t $(DOCKER_IMAGE) .
 	date > $@
 
 push: .docker.stamp
+	docker tag $(DOCKER_IMAGE) $(COMMIT_TAG)
+	docker tag $(DOCKER_IMAGE) $(LATEST_TAG)
 	docker push --all-tags $(DOCKER_IMAGE)
 .PHONY: push
 

@@ -37,13 +37,8 @@ container.ID = $(shell docker ps -q -f label=component=plugin-builder)
 Dockerfile: Dockerfile.in .var.AES_IMAGE
 	sed 's,@AES_IMAGE@,$(AES_IMAGE),' < $< > $@
 .docker.stamp: $(patsubst $(PLUGIN_DIR)/%.go,%.so,$(wildcard $(PLUGIN_DIR)/*)) Dockerfile
-	docker build -t $(DOCKER_IMAGE) .
+	docker build -t $(DOCKER_IMAGE):$(COMMIT_TAG) -t $(DOCKER_IMAGE):$(LATEST_TAG) .
 	date > $@
-
-tags: .docker.stamp
-	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(COMMIT_TAG)
-	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(LATEST_TAG)
-.PHONY: tags
 
 download-docker:
 	docker pull $(go.DOCKER_IMAGE) || docker run --rm --entrypoint=true $(go.DOCKER_IMAGE)
